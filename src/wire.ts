@@ -13,8 +13,8 @@ export interface ApiError extends Error {
 
 export function apiError(status: number, message: string): ApiError {
   const e = new Error(message) as ApiError;
-  e.status = status;
   Object.defineProperty(e, 'name', { value: 'ApiError' });
+  Object.defineProperty(e, 'status', { value: status, enumerable: true });
   return e;
 }
 

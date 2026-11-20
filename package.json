@@ -10,5 +10,9 @@
   },
   "scripts": {
     "start": "node --experimental-strip-types main.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
   }
 }

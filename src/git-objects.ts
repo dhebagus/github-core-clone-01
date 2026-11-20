@@ -47,6 +47,24 @@ export class ObjectStore {
     return [...this.objects.entries()].map(([oid, obj]) => ({ oid, obj }));
   }
 
+  /** Parsed commit view of `oid`, or undefined when absent / not a commit. */
+  parseCommit(oid: string): CommitInfo | undefined {
+    const obj = this.objects.get(oid);
+    return obj && obj.type === 'commit' ? parseCommit(obj.body) : undefined;
+  }
+
+  /** Parsed tree view of `oid`, or [] when absent / not a tree. */
+  parseTree(oid: string): TreeEntry[] {
+    const obj = this.objects.get(oid);
+    return obj && obj.type === 'tree' ? parseTree(obj.body) : [];
+  }
+
+  /** Raw body bytes for a blob, or undefined. */
+  blob(oid: string): Buffer | undefined {
+    const obj = this.objects.get(oid);
+    return obj && obj.type === 'blob' ? obj.body : undefined;
+  }
+
   get size(): number { return this.objects.size; }
 }
 

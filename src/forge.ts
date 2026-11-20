@@ -184,9 +184,9 @@ export class Forge {
       if (parts.length > 0) cur.blobs.set(parts[parts.length - 1], oid);
     }
     const write = (node: Node): string => {
-      const entries: { mode: string; name: string; oid: string; type: GitObjectType }[] = [];
-      for (const [name, oid] of node.blobs) entries.push({ mode: '100644', name, oid, type: 'blob' });
-      for (const [name, child] of node.dirs) entries.push({ mode: '40000', name, oid: write(child), type: 'tree' });
+      const entries: { mode: string; name: string; oid: string }[] = [];
+      for (const [name, oid] of node.blobs) entries.push({ mode: '100644', name, oid });
+      for (const [name, child] of node.dirs) entries.push({ mode: '40000', name, oid: write(child) });
       entries.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
       const body = Buffer.concat(
         entries.map((e) => Buffer.concat([Buffer.from(`${e.mode} ${e.name}\0`, 'utf8'), Buffer.from(e.oid, 'hex')])),
@@ -327,4 +327,4 @@ export function labelOf(name: string, color = 'ededed', description: string | nu
   return { name, color, description };
 }
 
-export { ZERO_OID, hashObject };
+export { ZERO_OID };
