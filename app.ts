@@ -42,6 +42,12 @@ export function createApp(): Server {
       sendJson(res, 200, { current_user_url: '/api/v3/user', rate_limit_url: '/api/v3/rate_limit' }, { 'x-oauth-scopes': 'repo, read:org' });
       return;
     }
+    
+    // Simple user endpoint for testing
+    if (method === 'GET' && path === '/api/v3/user') {
+      sendJson(res, 200, { login: 'bagus-hardiansyah', id: 1, type: 'User' });
+      return;
+    }
 
     // Everything else, every method: GitHub's 404 body.
     sendJson(res, 404, { message: 'Not Found' });
